@@ -1,0 +1,13 @@
+section {
+  position: relative;
+}
+.main-content {
+  position: absolute;
+  top: 20%;
+  left: 3%;
+}
+
+h1,
+p {
+  color: #fff;
+}

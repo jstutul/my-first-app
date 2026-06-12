@@ -1,0 +1,40 @@
+<!-- <div class="col course">
+  <div class="card">
+    <img [src]="course.image" class="card-img-top w-auto"  alt="..." />
+    <div class="card-body">
+      <h5 class="card-title">{{course?.title}}</h5>
+      <p class="card-text">
+        {{course?.description}}
+      </p>
+    </div>
+  </div>
+  @if(isDelete){
+    <button class="btn btn-danger btn-sm btndel" (click)="deleteCourse()"><i class="bi bi-trash"></i></button>
+  }
+</div>
+ -->
+
+<div class="row row-cols-1 row-cols-md-4 g-4">
+  @for (course of courses; track $index) {
+    <div class="col course">
+      <div class="card">
+        <img [src]="course.image" class="card-img-top w-auto" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">{{ course?.title }}</h5>
+          <p class="card-text">
+            {{ course?.description }}
+          </p>
+        </div>
+      </div>
+      @if (isAdmin) {
+        <button class="btn btn-danger btn-sm btndel" (click)="deleteCourse(course)">
+          <i class="bi bi-trash"></i>
+        </button>
+      }
+    </div>
+  } @empty {
+    @if(isAdmin){
+      <div class="text-center">No Course Added yet</div>
+    }
+  }
+</div>

@@ -1,0 +1,8 @@
+.course {
+  position: relative;
+}
+.btndel {
+  position: absolute;
+  top: 0;
+  right: 2%;
+}

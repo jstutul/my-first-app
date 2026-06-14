@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { String } from '../../enum/string.enum';
+import { Course } from '../../interfaces/course.interface';
+import { CourseService } from '../../services/course/course.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -8,28 +11,27 @@ import { String } from '../../enum/string.enum';
   styleUrl: './courses.css',
 })
 export class Courses { 
-
-  // @Input() course: any;
-  // @Input() courses: any;
-  @Input() isDelete = false;
   @Input() isAdmin= false;
-  @Output() del = new EventEmitter();
-  courses: any[] = [];
-  // deleteCourse() {
-  //   this.del.emit(this.courses);
-  // }
+  courses: Course[] = [];
+  courseSub!: Subscription;
+  private courseService=inject(CourseService)
   ngOnInit() {
-    this.getCourses();
+    this.courses = this.courseService.getCourses();
+    this.courseService.courses.subscribe({
+      next: (courses) => {
+        this.courses = courses;
+        console.log(this.courses, courses);
+      }, error: (e) => {
+        console.log(e);
+      }
+    });
   }
-  deleteCourse(course:any) {
-    this.del.emit(course);
-    
+  deleteCourse(course: Course) {
+    this.courseService.deleteCourse(course);
   }
-  getCourses() {
-    const data = localStorage.getItem(String.STORAGE_KEY);
-    if (data) {
-      this.courses = JSON.parse(data);
-    }
+  ngOnDestroy() {
+    console.log('course destory');
+    if (this.courseSub) this.courseSub.unsubscribe();
   }
 }
 

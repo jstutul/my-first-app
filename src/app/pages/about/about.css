@@ -1,0 +1,10 @@
+.team-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+.section-bg {
+  background-color: #f2f7f9;
+}

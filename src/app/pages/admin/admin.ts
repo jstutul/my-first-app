@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component,inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Courses } from '../courses/courses';
-import { form } from '@angular/forms/signals';
+// import { form } from '@angular/forms/signals';
 import { String } from '../../enum/string.enum';
-
+import { CourseService } from '../../services/course/course.service';
+import { Course } from '../../interfaces/course.interface';
 @Component({
   selector: 'app-admin',
   imports: [FormsModule,Courses],
@@ -16,16 +17,12 @@ export class Admin {
   cover_file!: any;
   showError = false;
   courses: any[] = [];
-
+  private courseService = inject(CourseService)
+  
   ngOnInit() {
-    // this.getCourses();
+    this.courses = this.courseService.getCourses();
+    
   }
-  // getCourses() {
-  //   const data = localStorage.getItem(String.STORAGE_KEY);
-  //   if (data) {
-  //     this.courses = JSON.parse(data);
-  //   }
-  // }
 
   onFileSelected(event:any){
     const file=event.target.files[0];
@@ -58,23 +55,17 @@ export class Admin {
     this.cover = null;
     this.cover_file = null;
   }
-
-  deleteCourse(course: any) {
-    this.courses = this.courses.filter(c => c.id !== course.id)
-    this.setItem(this.courses);
+  async SaveCourse(form: NgForm) {
+    try {
+      const formValue = form.value;
+      const data:Course = {
+        ...formValue, image: this.cover
+      };
+      await this.courseService.addCourse(data);
+      this.clearForm(form);
+    } catch (ex) {
+      console.log(ex);
+    }
+    
   }
-  SaveCourse(form: NgForm) {
-    const formValue = form.value;
-    const data = {
-      ...formValue, image: this.cover,id:this.courses.length+1
-    };
-
-    this.courses=[...this.courses,data]
-    this.setItem(this.courses);
-    this.clearForm(form);
-  }
-  setItem(data: any) {
-    localStorage.setItem(String.STORAGE_KEY, JSON.stringify(data));
-  }
-
 }

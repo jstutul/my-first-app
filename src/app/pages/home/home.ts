@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { Courses } from "../courses/courses";
-import { String } from '../../enum/string.enum';
+import { About } from "../about/about";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Courses],
+  imports: [Courses, About],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home {
-  courses: any[] = [];
+  // courses: any[] = [];
   ngOnInit() {
       // this.getCourses();
     }
